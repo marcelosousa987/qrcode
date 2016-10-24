@@ -25,7 +25,7 @@ import view.MainFrame;
 
 /**
  *
- * @author Phoenix
+ * @author Marcelo, João e Everaldo
  */
 public class QRCodeManager {
 

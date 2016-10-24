@@ -15,7 +15,7 @@ import model.QRCodeModel;
 
 /**
  *
- * @author Phoenix
+ * @author Marcelo, João e Everaldo
  */
 public class MainFrame extends javax.swing.JFrame {
             QRCodeModel qrc = new QRCodeModel(); // cria um modelo p/ ser usado como comunicação entre o view e o controller

@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 
 /**
  *
- * @author Phoenix
+ * @author Marcelo, Joao e Everaldo
  */
 public class QRCodeModel {
     private String fileName;
