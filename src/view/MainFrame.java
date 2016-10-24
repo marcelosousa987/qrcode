@@ -6,7 +6,12 @@
 package view;
 
 import controller.QRCodeManager;
+import dao.ConFactory;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -48,6 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblImage = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaResultado = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("QRCode Manager");
@@ -109,6 +115,13 @@ public class MainFrame extends javax.swing.JFrame {
         txtAreaResultado.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1), "Código decodificado"));
         jScrollPane1.setViewportView(txtAreaResultado);
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
         jPanelLayout.setHorizontalGroup(
@@ -124,6 +137,8 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(btnCarregar))
                     .addGroup(jPanelLayout.createSequentialGroup()
                         .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLimpar))
                     .addGroup(jPanelLayout.createSequentialGroup()
@@ -150,7 +165,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
-                    .addComponent(btnLimpar))
+                    .addComponent(btnLimpar)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -256,6 +272,14 @@ public class MainFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Favor preencher todos os campos.");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Connection con = new ConFactory().getConnection();
+        
+        
+        JOptionPane.showMessageDialog(null, "OK");
+            
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -291,6 +315,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnCarregar;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
