@@ -9,10 +9,24 @@ import java.sql.*;
 
 
 public class ConFactory {
+    
+    /* Essas configurações serão exportadas em um arquivo binário futuramente */
+    
+    private final String dbDriver = "com.mysql.jdbc.Driver";
+    private final String dbType = "mysql"; // ou microsoft:sqlserver, oracle, etc.
+    private final String dbName = "qrcode";
+    private final String sqlAddress = "localhost";
+    private final String sqlLogin = "root";
+    private final String sqlPass = "";
+    
+    /*               */
+    
     public Connection getConnection() { // Retorna uma nova conexão para uma instância
+        
         try {
-             return DriverManager.getConnection("jdbc:mysql://localhost/qrcode", "root", "");
-        } catch (SQLException e) {
+             Class.forName(dbDriver);            // Registrar driver 
+             return DriverManager.getConnection("jdbc:mysql://" + sqlAddress + "/" + dbName, sqlLogin, sqlPass);
+        } catch (SQLException | ClassNotFoundException e) { // Catch SQL excep ou erro no driver
             throw new RuntimeException(e);
         }
     }
