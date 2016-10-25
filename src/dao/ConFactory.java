@@ -25,7 +25,7 @@ public class ConFactory {
         
         try {
              Class.forName(dbDriver);            // Registrar driver 
-             return DriverManager.getConnection("jdbc:mysql://" + sqlAddress + "/" + dbName, sqlLogin, sqlPass);
+             return DriverManager.getConnection("jdbc:" + dbType + "://" + sqlAddress + "/" + dbName, sqlLogin, sqlPass);
         } catch (SQLException | ClassNotFoundException e) { // Catch SQL excep ou erro no driver
             throw new RuntimeException(e);
         }
