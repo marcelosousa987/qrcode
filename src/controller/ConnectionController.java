@@ -31,8 +31,8 @@ public class ConnectionController {
     
     public ConnectionController(Connection con, QRCodeModel qrcm) throws SQLException {
         pStmt = con.prepareStatement(sqlStatement);
-        pStmt.setString(1, qrcm.getFileName()); // Salva 
-        pStmt.setString(2, qrcm.getQRCodeText());
+        pStmt.setString(1, qrcm.getFileName()); // Salva nome do arquivo do Model
+        pStmt.setString(2, qrcm.getQRCodeText()); // Salva conteúdo do QR Code do Model
         // pStmt.setBlob(0, x); // Aqui será inputado o arquivo do QRCode em formato BLOB
         pStmt.execute();
         pStmt.close();
