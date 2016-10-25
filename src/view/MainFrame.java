@@ -5,13 +5,12 @@
  */
 package view;
 
+import controller.ConnectionController;
 import controller.QRCodeManager;
-import dao.ConFactory;
+import dao.CFactory;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -273,10 +272,17 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Connection con = new ConFactory().getConnection();
-        
-        
-        JOptionPane.showMessageDialog(null, "OK");
+        /* 
+            Falta criar validador de campos, é possível salvar campos vazios ainda..
+        */
+                try {
+                    Connection con = new CFactory().getConnection();
+                    ConnectionController cController = new ConnectionController(con, qrc); // Passa a conexão e o model
+                    JOptionPane.showMessageDialog(null, "Gravado " + qrc.getFileName() + " mensagem: " + qrc.getQRCodeText());
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+                    
             
     }//GEN-LAST:event_jButton1ActionPerformed
 

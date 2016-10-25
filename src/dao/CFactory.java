@@ -8,7 +8,7 @@ package dao;
 import java.sql.*;
 
 
-public class ConFactory {
+public class CFactory {
     
     /* Essas configurações serão exportadas em um arquivo binário futuramente */
     
