@@ -21,13 +21,13 @@ import model.QRCodeModel;
  *
  * @author Marcelo, João e Everaldo
  */
-public class MainFrame extends javax.swing.JFrame {
+public class EditarQRCode extends javax.swing.JFrame {
             QRCodeModel qrc = new QRCodeModel(); // cria um modelo p/ ser usado como comunicação entre o view e o controller
             QRCodeManager qrcm = new QRCodeManager(); // cria uma instancia pro controller
     /**
      * Creates new form MainFrame
      */
-    public MainFrame() {
+    public EditarQRCode() {
         initComponents();
     }
 
@@ -303,8 +303,9 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarQRCode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
         
         //</editor-fold>
@@ -312,7 +313,7 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+                new EditarQRCode().setVisible(true);
             }
         });
     }
