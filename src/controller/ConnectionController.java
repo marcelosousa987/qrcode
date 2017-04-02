@@ -27,9 +27,15 @@ public class ConnectionController {
     private final String sqlStatement = "insert into testeqr" +
                                         "(filename, qrcodetxt)" +
                                         " values (?, ?)";
-    private final PreparedStatement pStmt;
     
-    public ConnectionController(Connection con, QRCodeModel qrcm) throws SQLException {
+    private final String sqlTable = "create table testeqr" +
+                                    "(id int(10) PRIMARY KEY AUTO_INCREMENT, "+
+                                    "filename varchar(20) NOT NULL,"+
+                                    "qrcodetxt varchar(20))";
+    
+    private PreparedStatement pStmt;
+    
+    public void InserirInformacoes(Connection con, QRCodeModel qrcm) throws SQLException {
         pStmt = con.prepareStatement(sqlStatement);
         pStmt.setString(1, qrcm.getFileName()); // Salva nome do arquivo do Model
         pStmt.setString(2, qrcm.getQRCodeText()); // Salva conteúdo do QR Code do Model
@@ -38,5 +44,9 @@ public class ConnectionController {
         pStmt.close();
     }
     
-
+    public void GerarTabela(Connection con) throws SQLException{
+        pStmt = con.prepareStatement(sqlTable);
+        pStmt.execute(sqlTable);
+        pStmt.close();
+    }
 }

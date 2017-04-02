@@ -6,26 +6,21 @@
 package dao;
 
 import java.sql.*;
+import model.QRCodeConfigModel;
 
 
-public class CFactory {
+public class CFactory{
     
     /* Essas configurações serão exportadas em um arquivo binário futuramente */
-    
-    private final String dbDriver = "com.mysql.jdbc.Driver";
-    private final String dbType = "mysql"; // ou microsoft:sqlserver, oracle, etc.
-    private final String dbName = "qrcode";
-    private final String sqlAddress = "localhost";
-    private final String sqlLogin = "root";
-    private final String sqlPass = "";
-    
     /*               */
     
-    public Connection getConnection() { // Retorna uma nova conexão para uma instância
+    public Connection getConnection(QRCodeConfigModel QRCodeConfig) { // Retorna uma nova conexão para uma instância
         
         try {
-             Class.forName(dbDriver);            // Registrar driver 
-             return DriverManager.getConnection("jdbc:" + dbType + "://" + sqlAddress + "/" + dbName, sqlLogin, sqlPass);
+             Class.forName(QRCodeConfig.getDbDriver());            // Registrar driver 
+             return DriverManager.getConnection("jdbc:" + QRCodeConfig.getDbType() + "://" 
+                     + QRCodeConfig.getSqlAddress() + "/" 
+                     + QRCodeConfig.getDbName(), QRCodeConfig.getSqlLogin(), QRCodeConfig.getSqlPass());
         } catch (SQLException | ClassNotFoundException e) { // Catch SQL excep ou erro no driver
             throw new RuntimeException(e);
         }

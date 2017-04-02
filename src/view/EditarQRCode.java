@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import model.QRCodeConfigModel;
 import model.QRCodeModel;
 
 
@@ -24,6 +25,7 @@ import model.QRCodeModel;
 public class EditarQRCode extends javax.swing.JFrame {
             QRCodeModel qrc = new QRCodeModel(); // cria um modelo p/ ser usado como comunicação entre o view e o controller
             QRCodeManager qrcm = new QRCodeManager(); // cria uma instancia pro controller
+            QRCodeConfigModel QRCodeConfig = new QRCodeConfigModel(); // para passar informações de configurações
     /**
      * Creates new form MainFrame
      */
@@ -40,6 +42,11 @@ public class EditarQRCode extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         jPanel = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
         txtQRCode = new javax.swing.JTextField();
@@ -52,10 +59,80 @@ public class EditarQRCode extends javax.swing.JFrame {
         lblImage = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaResultado = new javax.swing.JTextArea();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        jPanelConfigDB = new javax.swing.JPanel();
+        jTextDBType = new javax.swing.JTextField();
+        jTextDBName = new javax.swing.JTextField();
+        jTextDBAddress = new javax.swing.JTextField();
+        jTextDBLogin = new javax.swing.JTextField();
+        jTextDBPass = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jLabelStatus = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jCheckBoxMenuCon = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("QRCode Manager");
+        setResizable(false);
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("QR Codes disponíveis"));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 294, Short.MAX_VALUE)
+        );
+
+        jButton3.setText("Sincronizar");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addGap(0, 259, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addGap(16, 16, 16))
+        );
+
+        jTabbedPane1.addTab("Arquivo", jPanel2);
 
         jPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
 
@@ -102,7 +179,7 @@ public class EditarQRCode extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+            .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
         );
 
         txtAreaResultado.setEditable(false);
@@ -113,13 +190,6 @@ public class EditarQRCode extends javax.swing.JFrame {
         txtAreaResultado.setText("Nenhum QR Code carregado");
         txtAreaResultado.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1), "Código decodificado"));
         jScrollPane1.setViewportView(txtAreaResultado);
-
-        jButton1.setText("Database");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
@@ -136,8 +206,6 @@ public class EditarQRCode extends javax.swing.JFrame {
                         .addComponent(btnCarregar))
                     .addGroup(jPanelLayout.createSequentialGroup()
                         .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLimpar))
                     .addGroup(jPanelLayout.createSequentialGroup()
@@ -145,7 +213,7 @@ public class EditarQRCode extends javax.swing.JFrame {
                             .addComponent(lblArquivo)
                             .addComponent(lblTexto))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelLayout.setVerticalGroup(
@@ -164,30 +232,254 @@ public class EditarQRCode extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
-                    .addComponent(btnLimpar)
-                    .addComponent(jButton1))
+                    .addComponent(btnLimpar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("QRCode", jPanel3);
+
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Localização dos arquivos"));
+
+        jButton4.setText("Selecionar...");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextField1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
+                .addContainerGap())
+        );
+
+        jPanelConfigDB.setBorder(javax.swing.BorderFactory.createTitledBorder("Banco de Dados"));
+
+        jTextDBType.setText("mysql");
+        jTextDBType.setEnabled(false);
+
+        jTextDBName.setText("qrcode");
+
+        jTextDBAddress.setText("localhost");
+
+        jTextDBLogin.setText("root");
+        jTextDBLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextDBLoginActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Banco de Dados");
+
+        jLabel2.setText("Database");
+
+        jLabel3.setText("Endereço");
+
+        jLabel4.setText("Login");
+
+        jLabel5.setText("Senha");
+
+        jButton5.setText("Testar conexão");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelConfigDBLayout = new javax.swing.GroupLayout(jPanelConfigDB);
+        jPanelConfigDB.setLayout(jPanelConfigDBLayout);
+        jPanelConfigDBLayout.setHorizontalGroup(
+            jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelConfigDBLayout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextDBType)
+                    .addComponent(jTextDBName)
+                    .addComponent(jTextDBAddress)
+                    .addComponent(jTextDBLogin)
+                    .addComponent(jTextDBPass, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+            .addGroup(jPanelConfigDBLayout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(jButton5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelConfigDBLayout.setVerticalGroup(
+            jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelConfigDBLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextDBType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextDBName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextDBAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextDBLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextDBPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        jButton1.setText("Salvar");
+
+        jButton2.setText("Resetar");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelConfigDB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jPanelConfigDB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Configurações", jPanel6);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabelStatus.setText("Não conectado.");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabelStatus)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelStatus)
+        );
+
+        jMenu1.setText("Arquivo");
+
+        jMenu2.setText("Exportar");
+
+        jMenuItem3.setText("Excel");
+        jMenu2.add(jMenuItem3);
+
+        jMenu1.add(jMenu2);
+
+        jMenuItem1.setText("Importar");
+        jMenu1.add(jMenuItem1);
+        jMenu1.add(jSeparator2);
+
+        jMenuItem2.setText("Sair");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu3.setText("Banco de Dados");
+
+        jMenu4.setText("Conexão");
+
+        jCheckBoxMenuCon.setText("Conectar-se");
+        jCheckBoxMenuCon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuConActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jCheckBoxMenuCon);
+
+        jMenu3.add(jMenu4);
+
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jTabbedPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -230,7 +522,7 @@ public class EditarQRCode extends javax.swing.JFrame {
     }
     private void txtQRCodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQRCodeKeyReleased
 
-        if(txtQRCode.getText().length() != 0){// Verifica se a latras no campo
+        if(txtQRCode.getText().length() != 0){// Verifica se ha letras no campo
             qrc.setFileName(txtFileName.getText()); // atribuir nome de arquivo
             qrc.setImageSize(lblImage.getWidth(), lblImage.getHeight()); // tamanho de arquivo
             qrc.setQRCodeText(txtQRCode.getText()); // atribuir o texto a ser codificado
@@ -247,6 +539,7 @@ public class EditarQRCode extends javax.swing.JFrame {
     }//GEN-LAST:event_txtQRCodeKeyReleased
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        
         if(!txtFileName.getText().isEmpty() && !txtQRCode.getText().isEmpty())
         {
             qrc.setFileName(txtFileName.getText()); // atribuir nome de arquivo
@@ -258,7 +551,9 @@ public class EditarQRCode extends javax.swing.JFrame {
                 {
                     ImageIcon imgIcon = new ImageIcon(qrc.getImage()); // cria um icone para JLabel
                     lblImage.setIcon(imgIcon); // seta o icone do JLabel
-                    JOptionPane.showMessageDialog(null, "Arquivo " + qrc.getFileName() + " gerado com sucesso.");
+                    if(efetuarConexao(false))
+                        JOptionPane.showMessageDialog(null, "Arquivo " + qrc.getFileName() + " gerado com sucesso.");
+                    
                     txtAreaResultado.setText(qrc.getQRCodeText());// usar a string do model depois de decodificado
                 }
                 else
@@ -271,24 +566,77 @@ public class EditarQRCode extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Favor preencher todos os campos.");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        /* 
-            Falta criar validador de campos, é possível salvar campos vazios ainda..
-        */
-                try {
-                    Connection con = new CFactory().getConnection();
-                    ConnectionController cController = new ConnectionController(con, qrc); // Passa a conexão e o model
-                    JOptionPane.showMessageDialog(null, "Gravado " + qrc.getFileName() + " mensagem: " + qrc.getQRCodeText());
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
-                }
+    
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        this.dispose();        
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private boolean efetuarConexao(boolean testFlag){
+        
+        QRCodeConfig.setDbName(jTextDBName.getText());
+        QRCodeConfig.setDbType(jTextDBType.getText());
+        QRCodeConfig.setSqlAddress(jTextDBAddress.getText());
+        QRCodeConfig.setSqlLogin(jTextDBLogin.getText());
+        QRCodeConfig.setSqlPass(jTextDBPass.getText());
+        
+        JOptionPane.showMessageDialog(null, "Dados das configurações:\n"+ 
+                QRCodeConfig.getDbDriver() + " \n" + QRCodeConfig.getDbName() + "\n " + 
+                QRCodeConfig.getDbType() + "\n " + QRCodeConfig.getSqlAddress() + "\n " +
+                QRCodeConfig.getSqlLogin() + "\n " + QRCodeConfig.getSqlPass());
+        
+        try {
+                    Connection con = new CFactory().getConnection(QRCodeConfig);
+                    ConnectionController cController = new ConnectionController(); // Passa a conexão e o model
                     
+                    if(con.isValid(0)){
+                        if(testFlag){
+                            JOptionPane.showMessageDialog(null, "Conexao OK."
+                                    + "\nCaso não existam as tabelas na database " + QRCodeConfig.getDbName() + " serão criadas agora.");
+                        
+                            ConnectionController testeConexao = new ConnectionController(); // Passa a conexão e o model
+                            // funções de create table //
+                            testeConexao.GerarTabela(con);
+                            return true; // Encerra conexão de teste com ok
+                        }
+                        cController.InserirInformacoes(con, qrc);
+                        jLabelStatus.setText("Conectado em " + QRCodeConfig.getSqlAddress());
+                        
+                    }
+               
+                 //  JOptionPane.showMessageDialog(null, "Gravado " + qrc.getFileName() + " mensagem: " + qrc.getQRCodeText());
+
+                } catch (SQLException ex) {
+                    if(testFlag)
+                        JOptionPane.showMessageDialog(null, "Erro durante o teste: " + ex.getMessage());
+                    else
+                        jLabelStatus.setText("Erro ao conectar-se: " + ex.getMessage());
+                    
+                  return false;
+                }
+        return true; 
+    }
+    
+    private void jCheckBoxMenuConActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuConActionPerformed
+
+       efetuarConexao(false); // false para não efetuar teste, conectar-se apenas
             
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jCheckBoxMenuConActionPerformed
+
+    private void jTextDBLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextDBLoginActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextDBLoginActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JOptionPane.showMessageDialog(null, "Será realizado um teste nas configurações inseridas.");
+        
+        if(efetuarConexao(true))
+            JOptionPane.showMessageDialog(null, "Teste concluído.\n As configurações estão válidas.");
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -297,7 +645,7 @@ public class EditarQRCode extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) { // Layout conforme Windows
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -323,9 +671,43 @@ public class EditarQRCode extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuCon;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabelStatus;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanelConfigDB;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextDBAddress;
+    private javax.swing.JTextField jTextDBLogin;
+    private javax.swing.JTextField jTextDBName;
+    private javax.swing.JTextField jTextDBPass;
+    private javax.swing.JTextField jTextDBType;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblArquivo;
     private javax.swing.JLabel lblImage;
     private javax.swing.JLabel lblTexto;
