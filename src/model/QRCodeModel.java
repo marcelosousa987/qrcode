@@ -12,6 +12,9 @@ import java.awt.image.BufferedImage;
 /**
  *
  * @author Marcelo, Joao e Everaldo
+ * 
+ * Model responsável por carregar as informações do QRCode
+ * 
  */
 public class QRCodeModel {
     private String fileName;

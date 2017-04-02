@@ -4,15 +4,18 @@
  * and open the template in the editor.
  */
 package dao;
-
+/*
+*
+*
+* DAO responsável por gerar uma nova conexão
+*
+*
+*/
 import java.sql.*;
 import model.QRCodeConfigModel;
 
 
 public class CFactory{
-    
-    /* Essas configurações serão exportadas em um arquivo binário futuramente */
-    /*               */
     
     public Connection getConnection(QRCodeConfigModel QRCodeConfig) { // Retorna uma nova conexão para uma instância
         

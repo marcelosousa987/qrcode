@@ -8,9 +8,11 @@ package model;
 /**
  *
  * @author Marcelo
+ * 
+ * Model responsável por guardar todas as configurações 
+ * 
  */
 
-// Model responsável por passar todas informações de configurações 
 
 public class QRCodeConfigModel {
     private String dbDriver = "com.mysql.jdbc.Driver";
@@ -19,7 +21,16 @@ public class QRCodeConfigModel {
     private String sqlAddress = "localhost";
     private String sqlLogin = "root";
     private String sqlPass = "";
-    private String arqDiretorio;
+    private String arqDiretorio = "/";
+    private boolean firstConfiguration = true; // Verificar se é a primeira vez que o usuário abre o programa
+
+    public boolean isFirstConfiguration() {
+        return firstConfiguration;
+    }
+
+    public void setFirstConfiguration(boolean firstConfiguration) {
+        this.firstConfiguration = firstConfiguration;
+    }
 
     public String getArqDiretorio() {
         return arqDiretorio;
