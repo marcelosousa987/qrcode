@@ -28,7 +28,7 @@ public class ConnectionController {
                                         "(filename, qrcodetxt)" +
                                         " values (?, ?)";
     
-    private final String sqlTable = "create table testeqr" +
+    private final String sqlTable = "create table if not exists testeqr" +
                                     "(id int(10) PRIMARY KEY AUTO_INCREMENT, "+
                                     "filename varchar(20) NOT NULL,"+
                                     "qrcodetxt varchar(20))";

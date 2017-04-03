@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Marcelo
@@ -14,7 +16,7 @@ package model;
  */
 
 
-public class QRCodeConfigModel {
+public class QRCodeConfigModel implements Serializable{
     private String dbDriver = "com.mysql.jdbc.Driver";
     private String dbType = "mysql"; // ou microsoft:sqlserver, oracle, etc.
     private String dbName = "qrcode";
@@ -23,6 +25,16 @@ public class QRCodeConfigModel {
     private String sqlPass = "";
     private String arqDiretorio = "/";
     private boolean firstConfiguration = true; // Verificar se é a primeira vez que o usuário abre o programa
+    private boolean checkBoxSalvarDB = false;
+    
+    public boolean isCheckBoxSalvarDB() {
+        return checkBoxSalvarDB;
+    }
+
+    public void setCheckBoxSalvarDB(boolean checkBoxSalvarDB) {
+        this.checkBoxSalvarDB = checkBoxSalvarDB;
+    }
+    
 
     public boolean isFirstConfiguration() {
         return firstConfiguration;

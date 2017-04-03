@@ -5,13 +5,10 @@
  */
 package controller;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import model.QRCodeConfigModel;
 
 /**
@@ -22,65 +19,38 @@ import model.QRCodeConfigModel;
  * 
  */
 public final class FileIOController{
-    PrintWriter pw; // Escrever o arquivo
-    BufferedReader br; // Ler o arquivo
-    private final ArrayList<String> fileConfig; // Arraylist para manusear as informações
     private final String filename;
+    private FileInputStream arquivoLeitura;
+    private ObjectInputStream objLeitura;
+    private FileOutputStream arquivoGravar;
+    private ObjectOutputStream objGravar;
     
-    public FileIOController(String filename, QRCodeConfigModel QRConfig){
-        fileConfig = new ArrayList<String>();
+    public FileIOController(String filename){
         this.filename = filename;
-
     }
     
-    public boolean carregarConfiguracoes(QRCodeConfigModel QRConfig){
-        try {
-            br = new BufferedReader(new FileReader(filename));
-            System.out.println("Carregando...");
-            String lerLinha = null;
-            while((lerLinha = br.readLine()) != null)
-                fileConfig.add(lerLinha);
+    public QRCodeConfigModel carregarConfiguracoes(QRCodeConfigModel QRConfig) throws Exception{
+       
+            arquivoLeitura = new FileInputStream(filename);
+            objLeitura     = new ObjectInputStream(arquivoLeitura);
             
-            br.close();
+            QRConfig = (QRCodeConfigModel) objLeitura.readObject(); // Ler o objeto e transformar do tipo QRCodeConfigModel
             
-            QRConfig.setArqDiretorio(fileConfig.get(0));
-            QRConfig.setDbName(fileConfig.get(1));
-            QRConfig.setDbType(fileConfig.get(2));
-            QRConfig.setSqlAddress(fileConfig.get(3));
-            QRConfig.setSqlLogin(fileConfig.get(4));
-            QRConfig.setSqlPass(fileConfig.get(5));
-            QRConfig.setFirstConfiguration(Boolean.valueOf(fileConfig.get(6)));
+            objLeitura.close();
+            arquivoLeitura.close();
             
-            return true;
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
+            return QRConfig; // Retornar o objeto
     }
     
-    public boolean escreverConfiguracoes(QRCodeConfigModel QRConfig){
-           
-            fileConfig.clear(); 
-            fileConfig.add(QRConfig.getArqDiretorio());
-            fileConfig.add(QRConfig.getDbName());
-            fileConfig.add(QRConfig.getDbType());
-            fileConfig.add(QRConfig.getSqlAddress());
-            fileConfig.add(QRConfig.getSqlLogin());
-            fileConfig.add(QRConfig.getSqlPass());
-            fileConfig.add(String.valueOf(QRConfig.isFirstConfiguration())); // Boolean > String
+    public void escreverConfiguracoes(QRCodeConfigModel QRConfig) throws Exception{
+            arquivoGravar = new FileOutputStream(filename);
+            objGravar = new ObjectOutputStream(arquivoGravar);
             
-        try {
-            pw = new PrintWriter(new FileOutputStream(filename));
+            objGravar.writeObject(QRConfig);
+            objGravar.flush();
+            objGravar.close();
             
-            for(String config : fileConfig)
-                pw.println(config);
-            pw.close();
-            fileConfig.clear();
-            return true;
-            
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
+            arquivoGravar.flush();
+            arquivoGravar.close();
     }
 }

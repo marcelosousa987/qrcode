@@ -12,6 +12,7 @@ package dao;
 *
 */
 import java.sql.*;
+import javax.swing.JOptionPane;
 import model.QRCodeConfigModel;
 
 
@@ -25,6 +26,10 @@ public class CFactory{
                      + QRCodeConfig.getSqlAddress() + "/" 
                      + QRCodeConfig.getDbName(), QRCodeConfig.getSqlLogin(), QRCodeConfig.getSqlPass());
         } catch (SQLException | ClassNotFoundException e) { // Catch SQL excep ou erro no driver
+            JOptionPane.showMessageDialog(null, "Erro durante o teste de conexão. \n" +
+                    e.getMessage(),
+                    "Teste de conexão", 
+                    JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
     }
