@@ -7,6 +7,7 @@ package controller;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
@@ -38,7 +39,7 @@ public class QRCodeEditController {
             f.close();
             return true;
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());;
+            System.out.println(ex.getMessage());
             return false;
         }
     }
@@ -52,7 +53,7 @@ public class QRCodeEditController {
             Result decQRCode = new MultiFormatReader().decode(bitmap);
             qrc.setQRCodeText(decQRCode.getText());
             return true;
-        } catch (Exception ex) {
+        } catch (IOException | NotFoundException ex) {
             System.out.println(ex.getMessage());
             return false;
         }
