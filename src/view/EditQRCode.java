@@ -99,6 +99,7 @@ public class EditQRCode extends javax.swing.JFrame{
         lblImage = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaResultado = new javax.swing.JTextArea();
+        jComboBoxExtensao = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jTextArqDiretorio = new javax.swing.JTextField();
@@ -256,7 +257,7 @@ public class EditQRCode extends javax.swing.JFrame{
             }
         });
 
-        txtFileName.setText("image.png");
+        txtFileName.setText("imagem");
 
         lblArquivo.setText("Arquivo de saída");
 
@@ -291,6 +292,8 @@ public class EditQRCode extends javax.swing.JFrame{
         txtAreaResultado.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1), "Código decodificado"));
         jScrollPane1.setViewportView(txtAreaResultado);
 
+        jComboBoxExtensao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PNG", "JPG", "GIF" }));
+
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
         jPanelLayout.setHorizontalGroup(
@@ -302,6 +305,8 @@ public class EditQRCode extends javax.swing.JFrame{
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanelLayout.createSequentialGroup()
                         .addComponent(txtFileName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxExtensao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCarregar))
                     .addGroup(jPanelLayout.createSequentialGroup()
@@ -324,7 +329,8 @@ public class EditQRCode extends javax.swing.JFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFileName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCarregar))
+                    .addComponent(btnCarregar)
+                    .addComponent(jComboBoxExtensao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTexto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -628,7 +634,7 @@ public class EditQRCode extends javax.swing.JFrame{
 
         if(result == JFileChooser.APPROVE_OPTION){
             File selectedFile = fileChooser.getSelectedFile(); // ponteiro para o arquivo
-            txtFileName.setText(selectedFile.getName());
+            txtFileName.setText(selectedFile.getName().replaceFirst("[.][^.]+$", "")); // Expressão regular 
             qrc.setFileName(selectedFile.getAbsolutePath()); // caminho completo do arq. pro model
 
             if(qrcm.exibirQRCode(qrc))
@@ -638,6 +644,7 @@ public class EditQRCode extends javax.swing.JFrame{
 
                 lblImage.setIcon(imgIcon);
                 txtAreaResultado.setText(qrc.getQRCodeText());// usar a string do model depois de decodificado
+                txtQRCode.setText(qrc.getQRCodeText());
             }
             else
             JOptionPane.showMessageDialog(null, qrc.getFileName() + " erro!");
@@ -656,7 +663,7 @@ public class EditQRCode extends javax.swing.JFrame{
     private void txtQRCodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQRCodeKeyReleased
 
         if(txtQRCode.getText().length() != 0){// Verifica se ha letras no campo
-            qrc.setFileName(txtFileName.getText()); // atribuir nome de arquivo
+            qrc.setFileName(QRCodeConfig.getArqDiretorio() + txtFileName.getText() + ".png"); // atribuir nome de arquivo
             qrc.setImageSize(lblImage.getWidth(), lblImage.getHeight()); // tamanho de arquivo
             qrc.setQRCodeText(txtQRCode.getText()); // atribuir o texto a ser codificado
             if(qrcm.gerarQRCode(qrc)){
@@ -675,7 +682,7 @@ public class EditQRCode extends javax.swing.JFrame{
         
         if(!txtFileName.getText().isEmpty() && !txtQRCode.getText().isEmpty())
         {
-            qrc.setFileName(txtFileName.getText()); // atribuir nome de arquivo
+            qrc.setFileName(QRCodeConfig.getArqDiretorio() + txtFileName.getText() + ".png"); // atribuir nome de arquivo
             qrc.setImageSize(lblImage.getWidth(), lblImage.getHeight()); // tamanho de arquivo
             qrc.setQRCodeText(txtQRCode.getText()); // atribuir o texto a ser codificado
 
@@ -801,7 +808,7 @@ public class EditQRCode extends javax.swing.JFrame{
 
         if(result == JFileChooser.APPROVE_OPTION){
             File selectedFile = fileChooser.getSelectedFile(); // ponteiro para o arquivo
-            jTextArqDiretorio.setText(selectedFile.getPath());
+            jTextArqDiretorio.setText(selectedFile.getPath() + "\\");
             salvarConfiguracoes();
         }
     }//GEN-LAST:event_jButtonSelecionarPastaActionPerformed
@@ -862,6 +869,7 @@ public class EditQRCode extends javax.swing.JFrame{
     private javax.swing.JButton jButtonTestar;
     private javax.swing.JCheckBox jCBoxSalvarDB;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuCon;
+    private javax.swing.JComboBox<String> jComboBoxExtensao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
