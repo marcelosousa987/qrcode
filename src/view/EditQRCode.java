@@ -10,11 +10,8 @@ import controller.FileIOController;
 import controller.QRCodeEditController;
 import dao.CFactory;
 import java.io.File;
-import static java.lang.Thread.sleep;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -67,7 +64,8 @@ public class EditQRCode extends javax.swing.JFrame{
             jTextDBPass.setText(QRCodeConfig.getSqlPass());
             jCBoxSalvarDB.setSelected(QRCodeConfig.isCheckBoxSalvarDB());
         }
-        
+        // Carregar valores da lista de arquivos da primeira aba
+        lblArqIdentificado.setText(String.valueOf(jTableArquivos.getRowCount()) + " arquivos identificados.");
     }
 
     /**
@@ -82,6 +80,11 @@ public class EditQRCode extends javax.swing.JFrame{
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableArquivos = new javax.swing.JTable();
+        lblArqIdentificado = new javax.swing.JLabel();
+        jButtonEditarQRCode = new javax.swing.JButton();
+        jButtonAtualizarDiretorio = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel = new javax.swing.JPanel();
@@ -118,12 +121,14 @@ public class EditQRCode extends javax.swing.JFrame{
         jPanel4 = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuArquivoSelect = new javax.swing.JMenu();
+        jMenuNovo = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuExportarSelect = new javax.swing.JMenu();
+        jMenuExportarExcel = new javax.swing.JMenuItem();
+        jMenuImportar = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuSair = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jCheckBoxMenuCon = new javax.swing.JCheckBoxMenuItem();
@@ -134,15 +139,72 @@ public class EditQRCode extends javax.swing.JFrame{
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("QR Codes disponíveis"));
 
+        jTableArquivos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"imagem.png", "teste"},
+                {"imagem01.png", "teste 01"},
+                {"imagem02.png", "teste 02"},
+                {"imagem03.png", "teste 03"}
+            },
+            new String [] {
+                "Arquivo", "Texto Decodificado"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableArquivos.setFillsViewportHeight(true);
+        jTableArquivos.setGridColor(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setViewportView(jTableArquivos);
+        if (jTableArquivos.getColumnModel().getColumnCount() > 0) {
+            jTableArquivos.getColumnModel().getColumn(0).setPreferredWidth(20);
+        }
+
+        lblArqIdentificado.setText("0 arquivos identificados.");
+
+        jButtonEditarQRCode.setText("Editar");
+
+        jButtonAtualizarDiretorio.setText("Atualizar");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 332, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jButtonAtualizarDiretorio, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonEditarQRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(lblArqIdentificado)))
+                .addGap(28, 28, 28))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 294, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblArqIdentificado)
+                    .addComponent(jButtonEditarQRCode)
+                    .addComponent(jButtonAtualizarDiretorio))
+                .addContainerGap())
         );
 
         jButton3.setText("Sincronizar");
@@ -153,12 +215,12 @@ public class EditQRCode extends javax.swing.JFrame{
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addGap(0, 259, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(11, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addGap(135, 135, 135))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +279,7 @@ public class EditQRCode extends javax.swing.JFrame{
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+            .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
         );
 
         txtAreaResultado.setEditable(false);
@@ -379,32 +441,30 @@ public class EditQRCode extends javax.swing.JFrame{
         jPanelConfigDBLayout.setHorizontalGroup(
             jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelConfigDBLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(24, 24, 24)
                 .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelConfigDBLayout.createSequentialGroup()
-                        .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextDBType)
-                            .addComponent(jTextDBName)
-                            .addComponent(jTextDBAddress)
-                            .addComponent(jTextDBLogin)
-                            .addComponent(jTextDBPass, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanelConfigDBLayout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jButtonTestar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextDBType)
+                    .addComponent(jTextDBName)
+                    .addComponent(jTextDBAddress)
+                    .addComponent(jTextDBLogin)
+                    .addComponent(jTextDBPass, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29))
+            .addGroup(jPanelConfigDBLayout.createSequentialGroup()
+                .addGap(103, 103, 103)
+                .addComponent(jButtonTestar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelConfigDBLayout.setVerticalGroup(
             jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConfigDBLayout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
+            .addGroup(jPanelConfigDBLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
                 .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextDBType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -424,9 +484,9 @@ public class EditQRCode extends javax.swing.JFrame{
                 .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextDBPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(18, 18, 18)
+                .addGap(41, 41, 41)
                 .addComponent(jButtonTestar)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButtonSalvar.setText("Salvar");
@@ -452,8 +512,8 @@ public class EditQRCode extends javax.swing.JFrame{
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelConfigDB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jButtonSalvar)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jButtonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonResetar)))
                 .addContainerGap())
@@ -463,12 +523,12 @@ public class EditQRCode extends javax.swing.JFrame{
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanelConfigDB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(39, 39, 39)
+                .addComponent(jPanelConfigDB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonSalvar)
-                    .addComponent(jButtonResetar))
+                    .addComponent(jButtonResetar)
+                    .addComponent(jButtonSalvar))
                 .addContainerGap())
         );
 
@@ -476,7 +536,7 @@ public class EditQRCode extends javax.swing.JFrame{
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabelStatus.setText("Pronto.");
+        jLabelStatus.setText("Pronto");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -491,28 +551,32 @@ public class EditQRCode extends javax.swing.JFrame{
             .addComponent(jLabelStatus)
         );
 
-        jMenu1.setText("Arquivo");
+        jMenuArquivoSelect.setText("Arquivo");
 
-        jMenu2.setText("Exportar");
+        jMenuNovo.setText("Novo");
+        jMenuArquivoSelect.add(jMenuNovo);
+        jMenuArquivoSelect.add(jSeparator1);
 
-        jMenuItem3.setText("Excel");
-        jMenu2.add(jMenuItem3);
+        jMenuExportarSelect.setText("Exportar");
 
-        jMenu1.add(jMenu2);
+        jMenuExportarExcel.setText("Excel");
+        jMenuExportarSelect.add(jMenuExportarExcel);
 
-        jMenuItem1.setText("Importar");
-        jMenu1.add(jMenuItem1);
-        jMenu1.add(jSeparator2);
+        jMenuArquivoSelect.add(jMenuExportarSelect);
 
-        jMenuItem2.setText("Sair");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jMenuImportar.setText("Importar");
+        jMenuArquivoSelect.add(jMenuImportar);
+        jMenuArquivoSelect.add(jSeparator2);
+
+        jMenuSair.setText("Sair");
+        jMenuSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jMenuSairActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenuArquivoSelect.add(jMenuSair);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jMenuArquivoSelect);
 
         jMenu3.setText("QRCode");
 
@@ -640,10 +704,6 @@ public class EditQRCode extends javax.swing.JFrame{
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        this.dispose();        
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     private boolean efetuarConexao(boolean testFlag){
         
         formParaModel();
@@ -750,6 +810,10 @@ public class EditQRCode extends javax.swing.JFrame{
             salvarConfiguracoes();        // TODO add your handling code here:
     }//GEN-LAST:event_jCBoxSalvarDBActionPerformed
 
+    private void jMenuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSairActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jMenuSairActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -790,6 +854,8 @@ public class EditQRCode extends javax.swing.JFrame{
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonAtualizarDiretorio;
+    private javax.swing.JButton jButtonEditarQRCode;
     private javax.swing.JButton jButtonResetar;
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JButton jButtonSelecionarPasta;
@@ -802,14 +868,15 @@ public class EditQRCode extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelStatus;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenuArquivoSelect;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuExportarExcel;
+    private javax.swing.JMenu jMenuExportarSelect;
+    private javax.swing.JMenuItem jMenuImportar;
+    private javax.swing.JMenuItem jMenuNovo;
+    private javax.swing.JMenuItem jMenuSair;
     private javax.swing.JPanel jPanel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -820,14 +887,18 @@ public class EditQRCode extends javax.swing.JFrame{
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanelConfigDB;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTableArquivos;
     private javax.swing.JTextField jTextArqDiretorio;
     private javax.swing.JTextField jTextDBAddress;
     private javax.swing.JTextField jTextDBLogin;
     private javax.swing.JTextField jTextDBName;
     private javax.swing.JTextField jTextDBPass;
     private javax.swing.JTextField jTextDBType;
+    private javax.swing.JLabel lblArqIdentificado;
     private javax.swing.JLabel lblArquivo;
     private javax.swing.JLabel lblImage;
     private javax.swing.JLabel lblTexto;
