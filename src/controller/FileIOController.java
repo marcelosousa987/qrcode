@@ -5,11 +5,17 @@
  */
 package controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import model.QRCodeConfigModel;
+import model.QRCodeModel;
 
 /**
  *
@@ -24,9 +30,53 @@ public final class FileIOController{
     private ObjectInputStream objLeitura;
     private FileOutputStream arquivoGravar;
     private ObjectOutputStream objGravar;
+    private int counter = 0;
+
+    public int getCounter() {
+        return counter;
+    }
     
     public FileIOController(String filename){
         this.filename = filename;
+    }
+    
+    public JTable carregarListaDeArquivos(JTable listaDeArquivos, QRCodeConfigModel QRCodeConfig,
+            QRCodeModel qrc, QRCodeEditController qrcm){
+        
+        File fileList = new File(QRCodeConfig.getArqDiretorio());
+        
+        HashMap<String,String> hashFileList;
+        /* Utilizaremos HashMap para melhor organizar o nome dos arquivos 
+         * e atribuir o código decodificado de cada imagem exibida 
+         */
+        hashFileList = new HashMap<>();
+
+        File[] files = fileList.listFiles();
+
+        DefaultTableModel model = (DefaultTableModel)listaDeArquivos.getModel();
+
+        System.out.println("Diretório: " + QRCodeConfig.getArqDiretorio());
+        
+                
+        for(int i = 0; i < files.length; i++){
+            if(files[i].getName().matches("^.*\\.(png|jpg|gif)$"))
+            {
+                qrc.setFileName(files[i].getAbsolutePath());
+                qrcm.decodificarQRCode(qrc);
+                if(qrc.getQRCodeText() != null){
+                    hashFileList.put(files[i].getName(), qrc.getQRCodeText());
+                    counter++;
+                    qrc.setQRCodeText(null); 
+                }
+            }
+        }
+        
+        for(Map.Entry m : hashFileList.entrySet()){
+            System.out.println(m.getKey() + " " + m.getValue());
+            model.addRow(new Object[] {m.getKey(), m.getValue()});
+        }
+        
+        return listaDeArquivos;
     }
     
     public QRCodeConfigModel carregarConfiguracoes(QRCodeConfigModel QRConfig) throws Exception{

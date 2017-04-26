@@ -12,9 +12,12 @@ import dao.CFactory;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.QRCodeConfigModel;
 import model.QRCodeModel;
 
@@ -64,8 +67,7 @@ public class EditQRCode extends javax.swing.JFrame{
             jTextDBPass.setText(QRCodeConfig.getSqlPass());
             jCBoxSalvarDB.setSelected(QRCodeConfig.isCheckBoxSalvarDB());
         }
-        // Carregar valores da lista de arquivos da primeira aba
-        lblArqIdentificado.setText(String.valueOf(jTableArquivos.getRowCount()) + " arquivos identificados.");
+        carregarEContarArquivos();
     }
 
     /**
@@ -82,10 +84,8 @@ public class EditQRCode extends javax.swing.JFrame{
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableArquivos = new javax.swing.JTable();
-        lblArqIdentificado = new javax.swing.JLabel();
         jButtonEditarQRCode = new javax.swing.JButton();
         jButtonAtualizarDiretorio = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
@@ -104,7 +104,6 @@ public class EditQRCode extends javax.swing.JFrame{
         jPanel7 = new javax.swing.JPanel();
         jTextArqDiretorio = new javax.swing.JTextField();
         jButtonSelecionarPasta = new javax.swing.JButton();
-        jCBoxSalvarDB = new javax.swing.JCheckBox();
         jPanelConfigDB = new javax.swing.JPanel();
         jTextDBType = new javax.swing.JTextField();
         jTextDBName = new javax.swing.JTextField();
@@ -117,6 +116,7 @@ public class EditQRCode extends javax.swing.JFrame{
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButtonTestar = new javax.swing.JButton();
+        jCBoxSalvarDB = new javax.swing.JCheckBox();
         jButtonSalvar = new javax.swing.JButton();
         jButtonResetar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -142,10 +142,7 @@ public class EditQRCode extends javax.swing.JFrame{
 
         jTableArquivos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"imagem.png", "teste"},
-                {"imagem01.png", "teste 01"},
-                {"imagem02.png", "teste 02"},
-                {"imagem03.png", "teste 03"}
+
             },
             new String [] {
                 "Arquivo", "Texto Decodificado"
@@ -173,11 +170,14 @@ public class EditQRCode extends javax.swing.JFrame{
             jTableArquivos.getColumnModel().getColumn(0).setPreferredWidth(20);
         }
 
-        lblArqIdentificado.setText("0 arquivos identificados.");
-
         jButtonEditarQRCode.setText("Editar");
 
         jButtonAtualizarDiretorio.setText("Atualizar");
+        jButtonAtualizarDiretorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAtualizarDiretorioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -185,30 +185,25 @@ public class EditQRCode extends javax.swing.JFrame{
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jButtonAtualizarDiretorio, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonEditarQRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(lblArqIdentificado)))
-                .addGap(28, 28, 28))
+                        .addGap(156, 156, 156)
+                        .addComponent(jButtonEditarQRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblArqIdentificado)
-                    .addComponent(jButtonEditarQRCode)
-                    .addComponent(jButtonAtualizarDiretorio))
-                .addContainerGap())
+                    .addComponent(jButtonAtualizarDiretorio)
+                    .addComponent(jButtonEditarQRCode))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jButton3.setText("Sincronizar");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -218,19 +213,13 @@ public class EditQRCode extends javax.swing.JFrame{
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(11, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addGap(135, 135, 135))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addGap(16, 16, 16))
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Arquivo", jPanel2);
@@ -257,9 +246,7 @@ public class EditQRCode extends javax.swing.JFrame{
             }
         });
 
-        txtFileName.setText("imagem");
-
-        lblArquivo.setText("Arquivo de saída");
+        lblArquivo.setText("Nome do Arquivo");
 
         lblTexto.setText("Texto a ser codificado");
 
@@ -280,7 +267,7 @@ public class EditQRCode extends javax.swing.JFrame{
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+            .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
         );
 
         txtAreaResultado.setEditable(false);
@@ -365,7 +352,7 @@ public class EditQRCode extends javax.swing.JFrame{
 
         jTabbedPane1.addTab("QRCode", jPanel3);
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Opções para salvar"));
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Diretório com arquivos QRCode"));
 
         jTextArqDiretorio.setText("/");
 
@@ -376,25 +363,18 @@ public class EditQRCode extends javax.swing.JFrame{
             }
         });
 
-        jCBoxSalvarDB.setText("Salvar arquivos no Banco de Dados");
-        jCBoxSalvarDB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCBoxSalvarDBActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+            .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextArqDiretorio)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonSelecionarPasta, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jCBoxSalvarDB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonSelecionarPasta, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(14, 14, 14)
+                        .addComponent(jTextArqDiretorio)))
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -402,10 +382,8 @@ public class EditQRCode extends javax.swing.JFrame{
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTextArqDiretorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonSelecionarPasta)
-                    .addComponent(jCBoxSalvarDB))
+                .addGap(7, 7, 7)
+                .addComponent(jButtonSelecionarPasta)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -442,11 +420,22 @@ public class EditQRCode extends javax.swing.JFrame{
             }
         });
 
+        jCBoxSalvarDB.setText("Utilizar o Banco de Dados para salvar/carregar arquivos");
+        jCBoxSalvarDB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBoxSalvarDBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelConfigDBLayout = new javax.swing.GroupLayout(jPanelConfigDB);
         jPanelConfigDB.setLayout(jPanelConfigDBLayout);
         jPanelConfigDBLayout.setHorizontalGroup(
             jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelConfigDBLayout.createSequentialGroup()
+                .addGap(103, 103, 103)
+                .addComponent(jButtonTestar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConfigDBLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -462,15 +451,15 @@ public class EditQRCode extends javax.swing.JFrame{
                     .addComponent(jTextDBLogin)
                     .addComponent(jTextDBPass, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29))
-            .addGroup(jPanelConfigDBLayout.createSequentialGroup()
-                .addGap(103, 103, 103)
-                .addComponent(jButtonTestar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConfigDBLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jCBoxSalvarDB, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanelConfigDBLayout.setVerticalGroup(
             jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelConfigDBLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addContainerGap()
                 .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextDBType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -490,9 +479,11 @@ public class EditQRCode extends javax.swing.JFrame{
                 .addGroup(jPanelConfigDBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextDBPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(41, 41, 41)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonTestar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jCBoxSalvarDB)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         jButtonSalvar.setText("Salvar");
@@ -528,10 +519,10 @@ public class EditQRCode extends javax.swing.JFrame{
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addComponent(jPanelConfigDB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonResetar)
                     .addComponent(jButtonSalvar))
@@ -821,6 +812,19 @@ public class EditQRCode extends javax.swing.JFrame{
         this.dispose();
     }//GEN-LAST:event_jMenuSairActionPerformed
 
+    private void jButtonAtualizarDiretorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtualizarDiretorioActionPerformed
+        carregarEContarArquivos();
+    }//GEN-LAST:event_jButtonAtualizarDiretorioActionPerformed
+    
+    public void carregarEContarArquivos(){
+        fioController.carregarListaDeArquivos(jTableArquivos, QRCodeConfig, qrc, qrcm);
+        
+        if(fioController.getCounter() < 1)
+            jLabelStatus.setText("Nenhum arquivo encontrado.");
+        else
+            jLabelStatus.setText(String.valueOf(fioController.getCounter()) + " arquivos identificados como QRCode.");
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -860,7 +864,6 @@ public class EditQRCode extends javax.swing.JFrame{
     private javax.swing.JButton btnCarregar;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonAtualizarDiretorio;
     private javax.swing.JButton jButtonEditarQRCode;
     private javax.swing.JButton jButtonResetar;
@@ -906,7 +909,6 @@ public class EditQRCode extends javax.swing.JFrame{
     private javax.swing.JTextField jTextDBName;
     private javax.swing.JTextField jTextDBPass;
     private javax.swing.JTextField jTextDBType;
-    private javax.swing.JLabel lblArqIdentificado;
     private javax.swing.JLabel lblArquivo;
     private javax.swing.JLabel lblImage;
     private javax.swing.JLabel lblTexto;
