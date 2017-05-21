@@ -8,6 +8,7 @@ package controller;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import model.QRCodeModel;
 
 /**
@@ -24,11 +25,11 @@ import model.QRCodeModel;
  +-----------+-------------+------+-----+---------+----------------+
  */
 public class ConnectionController {
-    private final String sqlStatement = "insert into testeqr" +
+    private final String sqlStatement = "insert into dados" +
                                         "(filename, qrcodetxt)" +
                                         " values (?, ?)";
     
-    private final String sqlTable = "create table if not exists testeqr" +
+    private final String sqlTable = "create table if not exists dados" +
                                     "(id int(10) PRIMARY KEY AUTO_INCREMENT, "+
                                     "filename varchar(20) NOT NULL,"+
                                     "qrcodetxt varchar(20))";
@@ -37,9 +38,8 @@ public class ConnectionController {
     
     public void InserirInformacoes(Connection con, QRCodeModel qrcm) throws SQLException {
         pStmt = con.prepareStatement(sqlStatement);
-        pStmt.setString(1, qrcm.getFileName()); // Salva nome do arquivo do Model
+        pStmt.setString(1, qrcm.getOnlyFileName()); // Salva nome do arquivo do Model
         pStmt.setString(2, qrcm.getQRCodeText()); // Salva conteúdo do QR Code do Model
-        // pStmt.setBlob(0, x); // Aqui será inputado o arquivo do QRCode em formato BLOB
         pStmt.execute();
         pStmt.close();
     }

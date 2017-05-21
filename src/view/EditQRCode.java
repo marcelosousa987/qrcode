@@ -12,12 +12,9 @@ import dao.CFactory;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import model.QRCodeConfigModel;
 import model.QRCodeModel;
 
@@ -124,15 +121,8 @@ public class EditQRCode extends javax.swing.JFrame{
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuArquivoSelect = new javax.swing.JMenu();
         jMenuNovo = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuExportarSelect = new javax.swing.JMenu();
-        jMenuExportarExcel = new javax.swing.JMenuItem();
-        jMenuImportar = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuSair = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jCheckBoxMenuCon = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("QRCode Manager");
@@ -152,7 +142,7 @@ public class EditQRCode extends javax.swing.JFrame{
                 java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -551,18 +541,12 @@ public class EditQRCode extends javax.swing.JFrame{
         jMenuArquivoSelect.setText("Arquivo");
 
         jMenuNovo.setText("Novo");
+        jMenuNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuNovoActionPerformed(evt);
+            }
+        });
         jMenuArquivoSelect.add(jMenuNovo);
-        jMenuArquivoSelect.add(jSeparator1);
-
-        jMenuExportarSelect.setText("Exportar");
-
-        jMenuExportarExcel.setText("Excel");
-        jMenuExportarSelect.add(jMenuExportarExcel);
-
-        jMenuArquivoSelect.add(jMenuExportarSelect);
-
-        jMenuImportar.setText("Importar");
-        jMenuArquivoSelect.add(jMenuImportar);
         jMenuArquivoSelect.add(jSeparator2);
 
         jMenuSair.setText("Sair");
@@ -574,22 +558,6 @@ public class EditQRCode extends javax.swing.JFrame{
         jMenuArquivoSelect.add(jMenuSair);
 
         jMenuBar1.add(jMenuArquivoSelect);
-
-        jMenu3.setText("QRCode");
-
-        jMenu4.setText("Conexão");
-
-        jCheckBoxMenuCon.setText("Conectar-se");
-        jCheckBoxMenuCon.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuConActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jCheckBoxMenuCon);
-
-        jMenu3.add(jMenu4);
-
-        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -684,10 +652,10 @@ public class EditQRCode extends javax.swing.JFrame{
                     lblImage.setIcon(imgIcon); // seta o icone do JLabel
                     if(QRCodeConfig.isCheckBoxSalvarDB()){
                         if(efetuarConexao(false))
-                            jLabelStatus.setText("Arquivo " + qrc.getFileName() + " salvo local e no banco de dados.");
+                            jLabelStatus.setText("Arquivo " + qrc.getOnlyFileName() + " salvo local e no banco de dados.");
                     }
                     else
-                        jLabelStatus.setText("Arquivo " + qrc.getFileName() + " salvo");
+                        jLabelStatus.setText("Arquivo " + qrc.getOnlyFileName() + " salvo");
                     
                     txtAreaResultado.setText(qrc.getQRCodeText());// usar a string do model depois de decodificado
                 }
@@ -731,16 +699,12 @@ public class EditQRCode extends javax.swing.JFrame{
 
                 } catch (SQLException ex) {
                         jLabelStatus.setText("Erro ao conectar-se: " + ex.getMessage());
+                        System.out.println(ex.getMessage());
                   return false;
                 }
         return true; 
     }
     
-    private void jCheckBoxMenuConActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuConActionPerformed
-        efetuarConexao(false); // false para não efetuar teste, conectar-se apenas
-            
-    }//GEN-LAST:event_jCheckBoxMenuConActionPerformed
-
     private void jTextDBLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextDBLoginActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextDBLoginActionPerformed
@@ -813,8 +777,13 @@ public class EditQRCode extends javax.swing.JFrame{
     }//GEN-LAST:event_jMenuSairActionPerformed
 
     private void jButtonAtualizarDiretorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtualizarDiretorioActionPerformed
+
         carregarEContarArquivos();
     }//GEN-LAST:event_jButtonAtualizarDiretorioActionPerformed
+
+    private void jMenuNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovoActionPerformed
+        jTabbedPane1.setSelectedIndex(1);        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuNovoActionPerformed
     
     public void carregarEContarArquivos(){
         fioController.carregarListaDeArquivos(jTableArquivos, QRCodeConfig, qrc, qrcm);
@@ -871,7 +840,6 @@ public class EditQRCode extends javax.swing.JFrame{
     private javax.swing.JButton jButtonSelecionarPasta;
     private javax.swing.JButton jButtonTestar;
     private javax.swing.JCheckBox jCBoxSalvarDB;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuCon;
     private javax.swing.JComboBox<String> jComboBoxExtensao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -879,13 +847,8 @@ public class EditQRCode extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelStatus;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenuArquivoSelect;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuExportarExcel;
-    private javax.swing.JMenu jMenuExportarSelect;
-    private javax.swing.JMenuItem jMenuImportar;
     private javax.swing.JMenuItem jMenuNovo;
     private javax.swing.JMenuItem jMenuSair;
     private javax.swing.JPanel jPanel;
@@ -899,7 +862,6 @@ public class EditQRCode extends javax.swing.JFrame{
     private javax.swing.JPanel jPanelConfigDB;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableArquivos;

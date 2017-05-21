@@ -30,10 +30,14 @@ public final class FileIOController{
     private ObjectInputStream objLeitura;
     private FileOutputStream arquivoGravar;
     private ObjectOutputStream objGravar;
-    private int counter = 0;
+    private int counter;
 
     public int getCounter() {
         return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
     
     public FileIOController(String filename){
@@ -44,6 +48,7 @@ public final class FileIOController{
             QRCodeModel qrc, QRCodeEditController qrcm){
         
         File fileList = new File(QRCodeConfig.getArqDiretorio());
+        setCounter(0);
         
         HashMap<String,String> hashFileList;
         /* Utilizaremos HashMap para melhor organizar o nome dos arquivos 
@@ -54,7 +59,8 @@ public final class FileIOController{
         File[] files = fileList.listFiles();
 
         DefaultTableModel model = (DefaultTableModel)listaDeArquivos.getModel();
-
+        model.setRowCount(0);
+        
         System.out.println("Diretório: " + QRCodeConfig.getArqDiretorio());
         
                 
@@ -76,7 +82,7 @@ public final class FileIOController{
             model.addRow(new Object[] {m.getKey(), m.getValue()});
         }
         
-        return listaDeArquivos;
+        return listaDeArquivos; 
     }
     
     public QRCodeConfigModel carregarConfiguracoes(QRCodeConfigModel QRConfig) throws Exception{

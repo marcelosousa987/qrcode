@@ -21,6 +21,10 @@ public class QRCodeModel {
     private String qrCodeText;
     private int imageWidth;
     private int imageHeight;
+
+    public String getOnlyFileName() {
+        return fileName.replaceAll("[^\\\\]*\\\\", ""); // String fileName sem o diretório
+    }
     private BufferedImage image;
     
     public int getImageWidth() {
